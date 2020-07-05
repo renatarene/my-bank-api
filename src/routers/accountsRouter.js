@@ -1,4 +1,5 @@
 import express from 'express';
+import { accountsModel } from '../model/account';
 
 const app = express();
 
@@ -25,8 +26,18 @@ app.post('/withdraw', (req, res) => {
  * Get current balance
  * return: {balance}
  */
-app.get('/balance/:agency/:account', (req, res) => {
-  // TODO: Not implemented
+app.get('/balance/:agency/:account', async (req, res) => {
+  // DONE: implemented
+  try {
+    const { agency, account } = req.params;
+    const { balance } = await accountsModel.findOne({
+      agencia: agency,
+      conta: account,
+    });
+    res.status(200).send({ balance });
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
 
 /**
