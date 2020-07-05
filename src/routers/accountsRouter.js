@@ -1,8 +1,6 @@
 import express from 'express';
 
-const app = express();
-
-export { app };
+const accountsRouter = express();
 
 /**
  * Deposit a value in a account
@@ -10,7 +8,8 @@ export { app };
  * return: {balance}
  */
 app.post('/deposit', (req, res) => {
-  // TODO: Not implemented
+  // DONE: Not implemented
+  res.send({ sucess: 'true' });
 });
 
 /**
@@ -85,3 +84,5 @@ app.get('/richest-customers', (req, res) => {
 app.post('/move-to-private-agency', (req, res) => {
   // TODO: Not implemented
 });
+
+export { accountsRouter };
