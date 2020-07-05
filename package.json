@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/renatarene/my-bank-api/issues"
   },
-  "homepage": "https://github.com/renatarene/my-bank-api#readme"
+  "homepage": "https://github.com/renatarene/my-bank-api#readme",
+  "dependencies": {
+    "mongoose": "^5.9.21"
+  }
 }
