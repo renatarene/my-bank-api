@@ -30,12 +30,19 @@ app.get('/balance/:agency/:account', async (req, res) => {
   // DONE: implemented
   try {
     const { agency, account } = req.params;
-    const { balance } = await accountsModel.findOne({
+    const accountFound = await accountsModel.findOne({
       agencia: agency,
       conta: account,
     });
+    if (accountFound === null) {
+      res.status(404).send({ message: 'Conta não encontrada' });
+      return;
+    }
+
+    const { balance } = accountFound;
     res.status(200).send({ balance });
   } catch (error) {
+    console.log(`Erro ao buscar saldo da conta: ${error}`);
     res.status(500).send(error);
   }
 });
