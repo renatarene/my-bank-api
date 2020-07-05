@@ -1,6 +1,6 @@
 import express from 'express';
 
-const accountsRouter = express();
+const app = express();
 
 /**
  * Deposit a value in a account
@@ -85,4 +85,4 @@ app.post('/move-to-private-agency', (req, res) => {
   // TODO: Not implemented
 });
 
-export { accountsRouter };
+export { app as Router };
