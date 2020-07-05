@@ -1,0 +1,25 @@
+{
+  "name": "my-bank-api",
+  "version": "1.0.0",
+  "description": "My api bank is a practical work of the IGTI school",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/renatarene/my-bank-api.git"
+  },
+  "keywords": [
+    "react",
+    "reactjs",
+    "mongodb",
+    "mongoose"
+  ],
+  "author": "Renata Ernestina",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/renatarene/my-bank-api/issues"
+  },
+  "homepage": "https://github.com/renatarene/my-bank-api#readme"
+}
