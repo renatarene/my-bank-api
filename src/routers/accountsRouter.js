@@ -54,7 +54,7 @@ app.post('/withdraw', async (req, res) => {
     };
 
     const update = {
-      $inc: { balance: -value },
+      $inc: { balance: -(value + 1) },
     };
     const accountUpdated = await accountsModel.findOneAndUpdate(
       filter,
@@ -129,11 +129,49 @@ app.delete('/account/:agency/:account', async (req, res) => {
 
 /**
  * Transfer between accounts
- * body: {origin-account, target-account, value}
- * return: {origin-account-balance}
+ * body: {origin_account, target_account, value}
+ * return: {origin_account_balance}
  */
-app.post('/transfer', (req, res) => {
-  // TODO: Not implemented
+app.post('/transfer', async (req, res) => {
+  // DONE: implemented
+  try {
+    const { origin_account, target_account, value } = req.body;
+    const originAccount = await accountsModel.findOne({
+      conta: origin_account,
+    });
+    const targetAccount = await accountsModel.findOne({
+      conta: target_account,
+    });
+    if (originAccount === null || targetAccount === null) {
+      res.status(400).send({ message: 'Requisição inválida!' });
+      return;
+    }
+
+    if (originAccount.agencia === targetAccount.agencia) {
+      await targetAccount.updateOne({ $inc: { balance: value } });
+      await originAccount.updateOne({ $inc: { balance: -value } });
+
+      const originAccountUpdated = await accountsModel.findOne({
+        conta: origin_account,
+      });
+      res
+        .status(200)
+        .send({ origin_account_balance: originAccountUpdated.balance });
+      return;
+    }
+
+    await targetAccount.updateOne({ $inc: { balance: value } });
+    await originAccount.updateOne({ $inc: { balance: -(value + 8) } });
+    const originAccountUpdated = await accountsModel.findOne({
+      conta: origin_account,
+    });
+    res
+      .status(200)
+      .send({ origin_account_balance: originAccountUpdated.balance });
+  } catch (error) {
+    console.log(`Erro efetuar transferência: ${error}`);
+    res.status(500).send(error);
+  }
 });
 
 /**
