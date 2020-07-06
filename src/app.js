@@ -15,6 +15,7 @@ app.listen(process.env.PORT, async () => {
     await mongoose.connect(process.env.MONGODB_URL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
+      useFindAndModify: false,
     });
     console.log('Conectado com sucesso no banco de dados!');
   } catch (error) {
