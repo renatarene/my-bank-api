@@ -3,19 +3,19 @@ import mongoose from 'mongoose';
 const accountsSchema = mongoose.Schema({
   agencia: {
     type: Number,
-    require: true,
+    required: true,
   },
   conta: {
     type: Number,
-    require: true,
+    required: true,
   },
   name: {
     type: String,
-    require: true,
+    required: true,
   },
   balance: {
     type: Number,
-    require: true,
+    required: true,
     validate(value) {
       if (value < 0)
         throw new Error('Valor negativo para o saldo nao permitido');
