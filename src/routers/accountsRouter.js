@@ -8,9 +8,35 @@ const app = express();
  * body: {agency, account, value}
  * return: {balance}
  */
-app.post('/deposit', (req, res) => {
-  // DONE: Not implemented
-  res.send({ sucess: 'true' });
+app.post('/deposit', async (req, res) => {
+  // DONE: implemented
+  try {
+    const { agency, account, value } = req.body;
+    const filter = {
+      agencia: agency,
+      conta: account,
+    };
+
+    const update = {
+      $inc: { balance: value },
+    };
+    const accountUpdated = await accountsModel.findOneAndUpdate(
+      filter,
+      update,
+      { new: true }
+    );
+
+    if (accountUpdated === null) {
+      res.status(404).send({ message: 'Conta não encontrada' });
+      return;
+    }
+
+    const { balance } = accountUpdated;
+    res.status(200).send({ balance });
+  } catch (error) {
+    console.log(`Erro ao atualizar saldo da conta: ${error}`);
+    res.status(500).send({ message: error });
+  }
 });
 
 /**
