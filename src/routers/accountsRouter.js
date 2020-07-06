@@ -216,7 +216,7 @@ app.get('/customer-lower-balance', async (req, res) => {
   try {
     const { limit } = req.body;
     const customerLowerBalance = await accountsModel
-      .find({})
+      .find({}, { _id: 0, agencia: 1, conta: 1, balance: 1 })
       .sort({ balance: 1 })
       .limit(limit);
     res.status(200).send(customerLowerBalance);
@@ -238,7 +238,7 @@ app.get('/richest-customers', async (req, res) => {
   try {
     const { limit } = req.body;
     const customerLowerBalance = await accountsModel
-      .find({}, { _id: 0, agencia: 1, conta: 1, balance: 1 })
+      .find({}, { _id: 0, agencia: 1, conta: 1, name: 1, balance: 1 })
       .sort({ balance: -1 })
       .limit(limit);
     res.status(200).send(customerLowerBalance);
