@@ -232,9 +232,20 @@ app.get('/customer-lower-balance', async (req, res) => {
  * return: {agency, account, name, balance}
  * ordered: {balance: desc, name: asc}
  */
-app.get('/richest-customers', (req, res) => {
-  // TODO: Not implemented
+app.get('/richest-customers', async (req, res) => {
+  // DONE: implemented
   // TODO: Use the querysting package instead of the body
+  try {
+    const { limit } = req.body;
+    const customerLowerBalance = await accountsModel
+      .find({}, { _id: 0, agencia: 1, conta: 1, balance: 1 })
+      .sort({ balance: -1 })
+      .limit(limit);
+    res.status(200).send(customerLowerBalance);
+  } catch (error) {
+    console.log(`Erro ao buscar clientes com maior sado em conta: ${error}`);
+    res.status(500).send(error);
+  }
 });
 
 /**
