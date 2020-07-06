@@ -102,10 +102,29 @@ app.get('/balance/:agency/:account', async (req, res) => {
 
 /**
  * Delete a account
- * return: {active-accounts}
+ * return: {active_accounts}
  */
-app.delete('/account/:agency/:account', (req, res) => {
-  // TODO: Not implemented
+app.delete('/account/:agency/:account', async (req, res) => {
+  // DONE: implemented
+  try {
+    const { agency, account } = req.params;
+    const filter = {
+      agencia: agency,
+      conta: account,
+    };
+    const accountDeleted = await accountsModel.findOneAndDelete(filter);
+    if (accountDeleted === null) {
+      res.status(404).send({ message: 'Conta não encontrada!' });
+      return;
+    }
+    const totalAccountsActives = await accountsModel.countDocuments({
+      agencia: agency,
+    });
+    res.status(202).send({ active_accounts: totalAccountsActives });
+  } catch (error) {
+    console.log(`Erro ao excluir conta: ${error}`);
+    res.status(500).send(error);
+  }
 });
 
 /**
