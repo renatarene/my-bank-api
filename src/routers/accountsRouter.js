@@ -208,10 +208,22 @@ app.get('/balance-average/:agency', async (req, res) => {
  * Get Customers with lower balance
  * body: {limit}
  * return: {agency, account, balance}
+ * ordered: {balance: asc}
  */
-app.get('/customer-lower-balance', (req, res) => {
-  // TODO: Not implemented
+app.get('/customer-lower-balance', async (req, res) => {
+  // DONE: implemented
   // TODO: Use the querystring package instead of the body
+  try {
+    const { limit } = req.body;
+    const customerLowerBalance = await accountsModel
+      .find({})
+      .sort({ balance: 1 })
+      .limit(limit);
+    res.status(200).send(customerLowerBalance);
+  } catch (error) {
+    console.log(`Erro ao buscar cliente com menor sado em conta: ${error}`);
+    res.status(500).send(error);
+  }
 });
 
 /**
