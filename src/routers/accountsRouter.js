@@ -176,10 +176,32 @@ app.post('/transfer', async (req, res) => {
 
 /**
  * Get average account balance for an agency
- * return: {average-balance}
+ * return: {average_balance}
  */
-app.get('/balance-average/:agency', (req, res) => {
-  // TODO: Not implemented
+app.get('/balance-average/:agency', async (req, res) => {
+  // DONE: implemented
+  try {
+    const { agency } = req.params;
+    console.log(`Agencia: ${agency}`);
+    const averageAccountBalance = await accountsModel.aggregate([
+      { $match: { agencia: +agency } },
+      {
+        $group: {
+          _id: '$agencia',
+          average_balance: { $avg: '$balance' },
+        },
+      },
+    ]);
+    if (averageAccountBalance === null || averageAccountBalance.length === 0) {
+      res.status(404).send({ message: 'Agência não encontrada' });
+    }
+    res
+      .status(200)
+      .send({ average_balance: averageAccountBalance[0].average_balance });
+  } catch (error) {
+    console.log(`Erro ao pegar saldo médio da conta: ${error}`);
+    res.status(500).send(error);
+  }
 });
 
 /**
