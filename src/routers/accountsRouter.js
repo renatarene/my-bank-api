@@ -34,7 +34,7 @@ app.post('/deposit', async (req, res) => {
     const { balance } = accountUpdated;
     res.status(200).send({ balance });
   } catch (error) {
-    console.log(`Erro ao atualizar saldo da conta: ${error}`);
+    console.log(`Erro ao realizar deposito na conta: ${error}`);
     res.status(500).send({ message: error });
   }
 });
